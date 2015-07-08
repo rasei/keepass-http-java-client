@@ -16,7 +16,7 @@ public class EncryptionUtilTest {
       String verifier = Base64.getEncoder().encodeToString(EncryptionUtil.encrypt(iv, iv, key));
       assertEquals("rn/cRWFibbGI+JmKaGgvPRGCEZrN/ixmvD4oCAnBRec=", verifier);
 
-      String ivEncrypted = EncryptionUtil.decrypt(verifier.getBytes("UTF-8"), iv, key);
+      String ivEncrypted = EncryptionUtil.decrypt(Base64.getDecoder().decode(verifier), iv, key);
       assertEquals(iv, ivEncrypted);
    }
 
