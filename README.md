@@ -13,7 +13,7 @@ Library for accessing a KeePass-database with the [KeePassHttp](https://github.c
 	}
 	
 ##How to run the tests
-The tests are base on the tests provided by [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin.
+The tests are based on the tests provided by [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin.
 
 * Install KeePass with the [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin
 * Download and open the test-database available at {https://github.com/pfn/keepasshttp/blob/master/test/test.kdbx}

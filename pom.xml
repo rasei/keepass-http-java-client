@@ -7,6 +7,20 @@
 	<name>${project.artifactId}</name>
 	<version>1.0-SNAPSHOT</version>
 	<description>Connector for accessing a KeePass-database with the KeePassHttp-Plugin</description>
+	<url>https://github.com/rasei/keepass-http-java-client</url>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Ralf Seidengarn</name>
+			<email>ralf.seidengarn@yahoo.de</email>
+			<url>https://github.com/rasei</url>
+		</developer>
+	</developers>
 	<build>
 		<plugins>
 			<plugin>
@@ -31,7 +45,7 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -40,7 +54,8 @@
 		</dependency>
 	</dependencies>
 	<scm>
-		<url>https://github.com/rasei/keepass-http-java-client.git</url>
+		<connection>scm:git:git@github.com:rasei/keepass-http-java-client.git</connection>
+		<developerConnection>scm:git:git@github.com:rasei/keepass-http-java-client.git</developerConnection>
+		<url>git@github.com:rasei/keepass-http-java-client.git</url>
 	</scm>
-	<url>https://github.com/rasei/keepass-http-java-client</url>
 </project>
