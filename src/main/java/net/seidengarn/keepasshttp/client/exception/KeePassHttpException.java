@@ -15,10 +15,21 @@
  */
 package net.seidengarn.keepasshttp.client.exception;
 
-public class EncryptionException extends Exception {
+public class KeePassHttpException extends Exception {
 
-   public EncryptionException(Exception e) {
-      super(e);
+   public KeePassHttpException() {
+   }
+
+   public KeePassHttpException(String a) {
+      super(a);
+   }
+
+   public KeePassHttpException(String a, Throwable t) {
+      super(a, t);
+   }
+
+   public KeePassHttpException(Throwable t) {
+      super(t);
    }
 
 }
