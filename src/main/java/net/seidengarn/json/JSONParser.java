@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * A Parser for a JSON-String
  *
- * @author $Author$
+ * @author Ralf Seidengarn
  * @version $Revision$
  */
 public class JSONParser {

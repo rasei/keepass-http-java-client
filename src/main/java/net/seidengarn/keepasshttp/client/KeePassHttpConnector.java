@@ -15,8 +15,6 @@
  */
 package net.seidengarn.keepasshttp.client;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import net.seidengarn.json.JSONParser;
 import net.seidengarn.keepasshttp.client.exception.EncryptionException;
 import net.seidengarn.keepasshttp.client.exception.KeePassHttpCommunicationException;
@@ -74,7 +72,6 @@ public class KeePassHttpConnector {
          client.getHttpConnectionManager().getParams().setSoTimeout(10000);
 
          String iv = generateIv();
-         String verifier = Base64.getEncoder().encodeToString(EncryptionUtil.encrypt(iv, iv, key));
 
          Map<String, Object> map = new HashMap<>();
          map.put("RequestType", "get-logins");
@@ -106,8 +103,8 @@ public class KeePassHttpConnector {
          }
 
          iv = (String) map.get("Nonce");
-         assertNotNull(map.get("Entries")); // TODO
-         assertTrue(map.get("Entries") instanceof List);// TODO
+         // assertNotNull(map.get("Entries")); // TODO
+         // assertTrue(map.get("Entries") instanceof List);// TODO
          List<KeePassLogin> loginList = new ArrayList<>();
 
          List<Object> entries = (List<Object>) map.get("Entries");

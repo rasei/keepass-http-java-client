@@ -31,8 +31,23 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Utility-class for Encryption and Decryption
+ *
+ * @author Ralf Seidengarn
+ * @version $Revision$
+ */
 public class EncryptionUtil {
 
+   /**
+    * Encrypt a text with AES/CBC
+    *
+    * @param plainText plain text
+    * @param iv
+    * @param encryptionKey
+    * @return encrypted text as byte-array
+    * @throws EncryptionException exception instead of detailled exception which may occur during encryption
+    */
    static byte[] encrypt(String plainText, String iv, String encryptionKey) throws EncryptionException {
       try {
          Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
