@@ -130,7 +130,6 @@ public class KeePassHttpConnectorTest {
       assertEquals("bogustest1-user", logins.get(0).getLogin());
    }
 
-   @Test
    public void testGetLoginsSubpath() throws KeePassHttpException {
       KeePassHttpConnector connector = new KeePassHttpConnector(id, key);
       List<KeePassLogin> logins = connector.getLogins("http://www.host.com", "http://www.host.com/path1");
@@ -138,18 +137,6 @@ public class KeePassHttpConnectorTest {
       assertEquals("user1", logins.get(0).getLogin());
    }
 
-   // test(function get_logins_subpath() {
-   // var resp;
-   // get_logins("http://www.host.com", "http://www.host.com/path1", null, function(r) {
-   // resp = r;
-   // lock.notify();
-   // });
-   // lock.wait();
-   // var response = JSON.parse(resp);
-   // assert_equals(1, response.Entries.length);
-   // assert_equals("user1", decrypt(response.Entries[0].Login, response.Nonce));
-   // });
-   @Test
    public void testGetLoginsSubpath2() throws KeePassHttpException {
       KeePassHttpConnector connector = new KeePassHttpConnector(id, key);
       List<KeePassLogin> logins = connector.getLogins("http://www.host.com",
@@ -157,15 +144,4 @@ public class KeePassHttpConnectorTest {
       assertEquals(1, logins.size());
       assertEquals("user2", logins.get(0).getLogin());
    }
-   // test(function get_logins_subpath_2() {
-   // var resp;
-   // get_logins("http://www.host.com", "http://www.host.com/path2?param=value", null, function(r) {
-   // resp = r;
-   // lock.notify();
-   // });
-   // lock.wait();
-   // var response = JSON.parse(resp);
-   // assert_equals(1, response.Entries.length);
-   // assert_equals("user2", decrypt(response.Entries[0].Login, response.Nonce));
-   // });
 }
