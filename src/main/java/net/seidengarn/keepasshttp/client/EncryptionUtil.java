@@ -35,7 +35,6 @@ import javax.crypto.spec.SecretKeySpec;
  * Utility-class for Encryption and Decryption
  *
  * @author Ralf Seidengarn
- * @version $Revision$
  */
 public class EncryptionUtil {
 

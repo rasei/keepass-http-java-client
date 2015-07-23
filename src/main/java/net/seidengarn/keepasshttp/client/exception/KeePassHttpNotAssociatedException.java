@@ -15,6 +15,11 @@
  */
 package net.seidengarn.keepasshttp.client.exception;
 
+/**
+ * exception while using KeePassHttp-Java-Connector when the provided credentials are not associated
+ *
+ * @author Ralf Seidengarn
+ */
 public class KeePassHttpNotAssociatedException extends KeePassHttpException {
 
    public KeePassHttpNotAssociatedException() {

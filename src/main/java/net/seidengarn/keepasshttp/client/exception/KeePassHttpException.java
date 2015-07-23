@@ -15,6 +15,11 @@
  */
 package net.seidengarn.keepasshttp.client.exception;
 
+/**
+ * exception while using KeePassHttp-Java-Connector
+ *
+ * @author Ralf Seidengarn
+ */
 public class KeePassHttpException extends Exception {
 
    public KeePassHttpException() {

@@ -21,6 +21,11 @@ import java.util.Base64;
 
 import org.junit.Test;
 
+/**
+ * test for encryption util
+ *
+ * @author Ralf Seidengarn
+ */
 public class EncryptionUtilTest {
 
    @Test

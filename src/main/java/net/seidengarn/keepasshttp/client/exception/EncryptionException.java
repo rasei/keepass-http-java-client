@@ -15,6 +15,11 @@
  */
 package net.seidengarn.keepasshttp.client.exception;
 
+/**
+ * Container for misc. exceptions during encryption
+ *
+ * @author Ralf Seidengarn
+ */
 public class EncryptionException extends Exception {
 
    public EncryptionException(Exception e) {

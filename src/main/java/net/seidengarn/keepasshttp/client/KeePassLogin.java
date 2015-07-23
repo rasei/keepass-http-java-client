@@ -15,6 +15,11 @@
  */
 package net.seidengarn.keepasshttp.client;
 
+/**
+ * container for logins
+ *
+ * @author Ralf Seidengarn
+ */
 public class KeePassLogin {
    private String name;
    private String login;

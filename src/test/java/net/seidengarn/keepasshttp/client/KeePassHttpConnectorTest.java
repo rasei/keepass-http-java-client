@@ -25,6 +25,11 @@ import javax.crypto.Cipher;
 
 import org.junit.Test;
 
+/**
+ * test for the KeePassHttpConnector derived from the tests provided by the KeePassHttpPlugin
+ *
+ * @author Ralf Seidengarn
+ */
 public class KeePassHttpConnectorTest {
 
    private String id = "Test Key 128bit";
