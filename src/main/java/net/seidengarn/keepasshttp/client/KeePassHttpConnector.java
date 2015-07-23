@@ -21,6 +21,7 @@ import net.seidengarn.keepasshttp.client.exception.KeePassHttpCommunicationExcep
 import net.seidengarn.keepasshttp.client.exception.KeePassHttpException;
 import net.seidengarn.keepasshttp.client.exception.KeePassHttpNotAssociatedException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -32,38 +33,76 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Connector for communication with a local KeePass with installed KeePassHttp-Plugin.
+ * Connector for communication with a local KeePass with installed KeePassHttp-Plugin. By default the key and id will be
+ * stored after successfull association.
  *
  * @author Ralf Seidengarn
- * @version $Revision$
  */
 public class KeePassHttpConnector {
 
-   private int port;
+   private static final Log LOG = LogFactory.getLog(KeePassHttpConnector.class);
+   private int port = 19455;
+   private File keyFile;
    private String id;
    private String key;
 
+   /**
+    * Constructor tries to load the stored key and id
+    */
    public KeePassHttpConnector() {
-      this(19455);
+      this.keyFile = new File(FileUtils.getUserDirectory(), "keepasshttpclient.json");
+      loadKey();
    }
 
+   /**
+    * Constructor
+    * 
+    * @param port port running KeePassHttp-Plugin (if different from default)
+    */
    public KeePassHttpConnector(int port) {
+      this();
       this.port = port;
    }
 
+   /**
+    * Constructor with a predefined id an key, both will not be stored
+    * 
+    * @param id Identifier for the client authenticated by the key as configured in the KeepassDatabase
+    * @param key AES-Key
+    */
    public KeePassHttpConnector(String id, String key) {
-      this();
       this.id = id;
       this.key = key;
+      this.keyFile = null;
    }
 
+   /**
+    * Gets a list of logins available for the specified URL
+    * 
+    * @param url URL to search for in the KeePassDatabase, by default this can also be the name of the entry in KDB
+    * @param submitUrl optional URL
+    * @return a List of KeePassLogin with 0 elements if no matching login was found
+    * @throws KeePassHttpException exception during communication
+    */
+   @SuppressWarnings("unchecked")
    public List<KeePassLogin> getLogins(String url, String submitUrl) throws KeePassHttpException {
       try {
-         testAssociate();
+         try {
+            testAssociate();
+         } catch (KeePassHttpNotAssociatedException e) {
+            LOG.info("KeePass is not associated, try to associate");
+            associate();
+         }
 
-         // TODO url!=null
+         if (url == null) {
+            throw new KeePassHttpException("missing parameter url");
+         }
          if (submitUrl == null) {
             submitUrl = url;
          }
@@ -103,8 +142,6 @@ public class KeePassHttpConnector {
          }
 
          iv = (String) map.get("Nonce");
-         // assertNotNull(map.get("Entries")); // TODO
-         // assertTrue(map.get("Entries") instanceof List);// TODO
          List<KeePassLogin> loginList = new ArrayList<>();
 
          List<Object> entries = (List<Object>) map.get("Entries");
@@ -130,7 +167,45 @@ public class KeePassHttpConnector {
       }
    }
 
-   private void testAssociate() throws KeePassHttpException {
+   /**
+    * Load the key (and id) from the filesystem
+    */
+   @SuppressWarnings("unchecked")
+   private void loadKey() {
+      if (keyFile != null) {
+         try {
+            String data = FileUtils.readFileToString(keyFile);
+            Map<String, Object> map = (Map<String, Object>) JSONParser.parse(data);
+            id = (String) map.get("Id");
+            key = (String) map.get("Key");
+         } catch (IOException e) {
+            LOG.error("key could not be loaded");
+         }
+      }
+   }
+
+   /**
+    * Stores the key (and id) in the filesystem
+    * 
+    * @throws KeePassHttpException
+    */
+   private void storeKey() throws KeePassHttpException {
+      if (keyFile != null) {
+         try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("Key", key);
+            map.put("Id", id);
+            String data = JSONParser.compose(map);
+
+            FileUtils.writeStringToFile(keyFile, data);
+         } catch (IOException e) {
+            throw new KeePassHttpException("exception while storing the key", e);
+         }
+      }
+   }
+
+   @SuppressWarnings("unchecked")
+   void testAssociate() throws KeePassHttpException {
       if (id == null || key == null) {
          associate();
       }
@@ -172,13 +247,55 @@ public class KeePassHttpConnector {
    }
 
    private String generateIv() {
-      // TODO implement
-      return "QVFJREJBVUdCd2dKQ2dzTQ==";
+      byte[] ivArr = new byte[16];
+      for (int i = 0; i < ivArr.length; i++) {
+         ivArr[i] = (byte) RandomUtils.nextInt();
+      }
+      return Base64.getEncoder().encodeToString(ivArr);
    }
 
-   private void associate() {
-      // TODO Auto-generated method stub
+   @SuppressWarnings("unchecked")
+   void associate() throws KeePassHttpException {
+      if (key == null) {
+         key = generateIv();
+      }
 
+      try {
+         String iv = generateIv();
+         String verifier = Base64.getEncoder().encodeToString(EncryptionUtil.encrypt(iv, iv, key));
+
+         Map<String, Object> map = new HashMap<String, Object>();
+         map.put("RequestType", "associate");
+         map.put("Key", key);
+         map.put("Nonce", iv);
+         map.put("Verifier", verifier);
+         HttpClient client = new HttpClient();
+         client.getHttpConnectionManager().getParams().setSoTimeout(10000);
+         PostMethod postMethod = new PostMethod("http://localhost:" + port);
+         RequestEntity requestEntity = new StringRequestEntity(JSONParser.compose(map), "text/xml", "UTF-8");
+         postMethod.setRequestEntity(requestEntity);
+         int result = client.executeMethod(postMethod);
+         if (result != 200) {
+            throw new KeePassHttpCommunicationException("http-returncode is " + result + ", expected 200");
+         }
+
+         String responseBody = postMethod.getResponseBodyAsString();
+         map = (Map<String, Object>) JSONParser.parse(responseBody);
+
+         if (map == null || map.get("Success") == null) {
+            throw new KeePassHttpCommunicationException("response from KeePassHttp is invalid");
+         }
+
+         if (!map.get("Success").equals("true")) {
+            throw new KeePassHttpNotAssociatedException("client could not associate with KeePassHttp");
+         }
+
+         id = (String) map.get("Id");
+         storeKey();
+      } catch (EncryptionException e) {
+         throw new KeePassHttpCommunicationException(e);
+      } catch (IOException e) {
+         throw new KeePassHttpCommunicationException(e);
+      }
    }
-
 }
