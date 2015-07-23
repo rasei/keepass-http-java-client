@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.seidengarn</groupId>
 	<artifactId>keepass-http-java-client</artifactId>
-	<name>${project.artifactId}</name>
-	<version>0.1-SNAPSHOT</version>
+	<name>keepass-http-java-client</name>
+	<version>1.0-SNAPSHOT</version>
 	<description>Connector for accessing a KeePass-database with the KeePassHttp-Plugin</description>
 	<url>https://github.com/rasei/keepass-http-java-client</url>
 	<licenses>
@@ -79,7 +79,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.6</version>
@@ -92,14 +92,24 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin-->
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>net.seidengarn</groupId>
+			<artifactId>json</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
