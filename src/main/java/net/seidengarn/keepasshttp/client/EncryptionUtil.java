@@ -56,7 +56,7 @@ public class EncryptionUtil {
       } catch (NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException | InvalidKeyException
                | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException
                | UnsupportedEncodingException e) {
-         throw new EncryptionException(e);
+         throw new EncryptionException("Error during encryption", e);
       }
    }
 
@@ -69,7 +69,7 @@ public class EncryptionUtil {
       } catch (NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException | InvalidKeyException
                | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException
                | UnsupportedEncodingException e) {
-         throw new EncryptionException(e);
+         throw new EncryptionException("Error during decryption", e);
       }
    }
 

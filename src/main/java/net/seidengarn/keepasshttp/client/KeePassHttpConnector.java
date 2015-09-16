@@ -126,19 +126,21 @@ public class KeePassHttpConnector {
          postMethod.setRequestEntity(requestEntity);
          int result = client.executeMethod(postMethod);
          if (result != 200) {
-            throw new KeePassHttpCommunicationException("http-returncode is " + result + ", expected 200");
+            throw new KeePassHttpCommunicationException("Communication with KeePass failed, http-returncode is "
+                                                        + result + ", expected 200");
          }
 
          String responseBody = postMethod.getResponseBodyAsString();
          map = (Map<String, Object>) JSONParser.parse(responseBody);
 
          if (map == null || map.get("Success") == null) {
-            throw new KeePassHttpCommunicationException("response from KeePassHttp is invalid");
+            throw new KeePassHttpCommunicationException(
+                     "Communication with KeePass failed, response from KeePassHttp is invalid");
          }
 
          if (!map.get("Success").equals("true")) {
             throw new KeePassHttpCommunicationException(
-                     "call of get-logins with no success (access may be declined by user)");
+                     "Communication with KeePass failed, call of get-logins with no success (access may be declined by user)");
          }
 
          iv = (String) map.get("Nonce");
@@ -161,9 +163,9 @@ public class KeePassHttpConnector {
 
          return loginList;
       } catch (EncryptionException e) {
-         throw new KeePassHttpCommunicationException(e);
+         throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
       } catch (IOException e) {
-         throw new KeePassHttpCommunicationException(e);
+         throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
       }
    }
 
@@ -199,7 +201,7 @@ public class KeePassHttpConnector {
 
             FileUtils.writeStringToFile(keyFile, data);
          } catch (IOException e) {
-            throw new KeePassHttpException("exception while storing the key", e);
+            throw new KeePassHttpException("Exception while storing the key to communicate with KeePass", e);
          }
       }
    }
@@ -226,23 +228,26 @@ public class KeePassHttpConnector {
          postMethod.setRequestEntity(requestEntity);
          int result = client.executeMethod(postMethod);
          if (result != 200) {
-            throw new KeePassHttpCommunicationException("http-returncode is " + result + ", expected 200");
+            throw new KeePassHttpCommunicationException("Communication with KeePass failed, http-returncode is "
+                                                        + result + ", expected 200");
          }
 
          String responseBody = postMethod.getResponseBodyAsString();
          map = (Map<String, Object>) JSONParser.parse(responseBody);
 
          if (map == null || map.get("Success") == null) {
-            throw new KeePassHttpCommunicationException("response from KeePassHttp is invalid");
+            throw new KeePassHttpCommunicationException(
+                     "Communication with KeePass failed, response from KeePassHttp is invalid");
          }
 
          if (!map.get("Success").equals("true")) {
-            throw new KeePassHttpNotAssociatedException("client is not associated with KeePassHttp");
+            throw new KeePassHttpNotAssociatedException(
+                     "Communication with KeePass failed, client is not associated with KeePassHttp");
          }
       } catch (EncryptionException e) {
-         throw new KeePassHttpCommunicationException(e);
+         throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
       } catch (IOException e) {
-         throw new KeePassHttpCommunicationException(e);
+         throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
       }
    }
 
@@ -276,26 +281,29 @@ public class KeePassHttpConnector {
          postMethod.setRequestEntity(requestEntity);
          int result = client.executeMethod(postMethod);
          if (result != 200) {
-            throw new KeePassHttpCommunicationException("http-returncode is " + result + ", expected 200");
+            throw new KeePassHttpCommunicationException("Communication with KeePass failed, http-returncode is "
+                                                        + result + ", expected 200");
          }
 
          String responseBody = postMethod.getResponseBodyAsString();
          map = (Map<String, Object>) JSONParser.parse(responseBody);
 
          if (map == null || map.get("Success") == null) {
-            throw new KeePassHttpCommunicationException("response from KeePassHttp is invalid");
+            throw new KeePassHttpCommunicationException(
+                     "Communication with KeePass failed, response from KeePassHttp is invalid");
          }
 
          if (!map.get("Success").equals("true")) {
-            throw new KeePassHttpNotAssociatedException("client could not associate with KeePassHttp");
+            throw new KeePassHttpNotAssociatedException(
+                     "Communication with KeePass failed, client could not associate with KeePassHttp, maybe declined by user");
          }
 
          id = (String) map.get("Id");
          storeKey();
       } catch (EncryptionException e) {
-         throw new KeePassHttpCommunicationException(e);
+         throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
       } catch (IOException e) {
-         throw new KeePassHttpCommunicationException(e);
+         throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
       }
    }
 }
