@@ -5,7 +5,7 @@
 	<groupId>net.seidengarn</groupId>
 	<artifactId>keepass-http-java-client</artifactId>
 	<name>keepass-http-java-client</name>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<description>Connector for accessing a KeePass-database with the KeePassHttp-Plugin</description>
 	<url>https://github.com/rasei/keepass-http-java-client</url>
 	<licenses>
