@@ -5,7 +5,7 @@
 	<groupId>net.seidengarn</groupId>
 	<artifactId>keepass-http-java-client</artifactId>
 	<name>keepass-http-java-client</name>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 	<description>Connector for accessing a KeePass-database with the KeePassHttp-Plugin</description>
 	<url>https://github.com/rasei/keepass-http-java-client</url>
 	<licenses>
@@ -102,19 +102,19 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.5</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
+			<version>2.5</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.3</version>
 		</dependency>
 
 		<dependency>
