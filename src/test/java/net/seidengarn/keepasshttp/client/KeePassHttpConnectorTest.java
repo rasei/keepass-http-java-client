@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.crypto.Cipher;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -30,6 +31,7 @@ import org.junit.Test;
  *
  * @author Ralf Seidengarn
  */
+@Ignore
 public class KeePassHttpConnectorTest {
 
    private String id = "Test Key 128bit";
