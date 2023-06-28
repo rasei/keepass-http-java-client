@@ -1,8 +1,8 @@
 # Java-Client for KeePassHttp
 Library for accessing a KeePass-database with the [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin
 
-##Usage
-###Prerequisites
+## Usage
+### Prerequisites
 * Install KeePass with the [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin
 
 	KeePassHttpConnector connector = new KeePassHttpConnector();
@@ -12,7 +12,7 @@ Library for accessing a KeePass-database with the [KeePassHttp](https://github.c
 									+ login.getPassword());
 	}
 	
-##How to run the tests
+## How to run the tests
 The tests are based on the tests provided by [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin.
 
 * Install KeePass with the [KeePassHttp](https://github.com/pfn/keepasshttp/)-Plugin
