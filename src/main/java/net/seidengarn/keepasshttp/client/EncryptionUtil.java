@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Ralf Seidengarn
+ * Copyright 2023 Ralf Seidengarn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package net.seidengarn.keepasshttp.client;
 
-import net.seidengarn.keepasshttp.client.exception.EncryptionException;
-
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -30,6 +28,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import net.seidengarn.keepasshttp.client.exception.EncryptionException;
 
 /**
  * Utility-class for Encryption and Decryption
