@@ -22,6 +22,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class KeePassHttpConnector {
 
     private static final Logger LOG = Logger.getLogger(KeePassHttpConnector.class.getName());
     private int port = 19455;
-    private File keyFile;
+    private final File keyFile;
     private String id;
     private String key;
 
@@ -150,7 +151,7 @@ public class KeePassHttpConnector {
     private void loadKey() {
         if (keyFile != null) {
             try {
-                String data = FileUtils.readFileToString(keyFile, Charset.forName("UTF-8"));
+                String data = FileUtils.readFileToString(keyFile, StandardCharsets.UTF_8);
                 Map<String, Object> map = (Map<String, Object>) JSONParser.parse(data);
                 id = (String) map.get("Id");
                 key = (String) map.get("Key");
@@ -173,7 +174,7 @@ public class KeePassHttpConnector {
                 map.put("Id", id);
                 String data = JSONParser.compose(map);
 
-                FileUtils.writeStringToFile(keyFile, data, Charset.forName("UTF-8"));
+                FileUtils.writeStringToFile(keyFile, data, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new KeePassHttpException("Exception while storing the key to communicate with KeePass", e);
             }
