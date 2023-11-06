@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -72,7 +71,7 @@ public class KeePassHttpConnector {
     }
 
     /**
-     * Constructor with a predefined id an key, both will not be stored
+     * Constructor with a predefined id a key, both will not be stored
      *
      * @param id  Identifier for the client authenticated by the key as configured in the KeepassDatabase
      * @param key AES-Key
@@ -145,8 +144,24 @@ public class KeePassHttpConnector {
     }
 
     /**
-     * Load the key (and id) from the filesystem
+     * Gets a login for the specified URL or throws an exception if it does not exist or is not uniquely identified.
+     *
+     * @param url URL to search for in the KeePassDatabase, by default this can also be the name of the entry in KDB
+     * @return a KeePassLogin
+     * @throws KeePassHttpException exception during communication or the login couldn't be found
      */
+    public KeePassLogin getLogin(String url) throws KeePassHttpException {
+        List<KeePassLogin> logins = getLogins(url, url);
+        if (logins == null || logins.isEmpty()) {
+            throw new KeePassHttpException("Login for URL " + url +
+                    " not found");
+        } else if (logins.size() > 1) throw new KeePassHttpException("More than one login for URL " + url + " found.");
+        else return logins.get(0);
+    }
+
+        /**
+         * Load the key (and id) from the filesystem
+         */
     @SuppressWarnings("unchecked")
     private void loadKey() {
         if (keyFile != null) {
@@ -169,7 +184,7 @@ public class KeePassHttpConnector {
     private void storeKey() throws KeePassHttpException {
         if (keyFile != null) {
             try {
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("Key", key);
                 map.put("Id", id);
                 String data = JSONParser.compose(map);
@@ -190,12 +205,12 @@ public class KeePassHttpConnector {
             String iv = generateIv();
             String verifier = Base64.getEncoder().encodeToString(EncryptionUtil.encrypt(iv, iv, key));
 
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put("RequestType", "test-associate");
             map.put("Id", id);
             map.put("Nonce", iv);
             map.put("Verifier", verifier);
-            map = communicate(map);
+            communicate(map);
         } catch (EncryptionException e) {
             throw new KeePassHttpCommunicationException("Communication with KeePass failed", e);
         }
@@ -258,7 +273,7 @@ public class KeePassHttpConnector {
             String iv = generateIv();
             String verifier = Base64.getEncoder().encodeToString(EncryptionUtil.encrypt(iv, iv, key));
 
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put("RequestType", "associate");
             map.put("Key", key);
             map.put("Nonce", iv);
