@@ -178,8 +178,6 @@ public class KeePassHttpConnector {
 
     /**
      * Stores the key (and id) in the filesystem
-     *
-     * @throws KeePassHttpException
      */
     private void storeKey() throws KeePassHttpException {
         if (keyFile != null) {
@@ -235,7 +233,7 @@ public class KeePassHttpConnector {
             HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
             if (httpResponse.statusCode() != 200) {
-                throw new KeePassHttpCommunicationException("Communication with KeePass failed, http-returncode is "
+                throw new KeePassHttpCommunicationException("Communication with KeePass failed, http-return code is "
                         + httpResponse.statusCode() + ", expected 200");
             }
 
@@ -259,7 +257,7 @@ public class KeePassHttpConnector {
     private String generateIv() {
         byte[] ivArr = new byte[16];
         for (int i = 0; i < ivArr.length; i++) {
-            ivArr[i] = (byte) RandomUtils.nextInt();
+            ivArr[i] = (byte) RandomUtils.secure().randomInt();
         }
         return Base64.getEncoder().encodeToString(ivArr);
     }

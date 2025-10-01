@@ -15,7 +15,7 @@
  */
 package net.seidengarn.keepasshttp.client;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -42,20 +42,17 @@ public class EncryptionUtil {
     * Encrypt a text with AES/CBC
     *
     * @param plainText plain text
-    * @param iv
-    * @param encryptionKey
     * @return encrypted text as byte-array
-    * @throws EncryptionException exception instead of detailled exception which may occur during encryption
+    * @throws EncryptionException exception instead of detailed exception which may occur during encryption
     */
    static byte[] encrypt(String plainText, String iv, String encryptionKey) throws EncryptionException {
       try {
          Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
          SecretKeySpec key = new SecretKeySpec(Base64.getDecoder().decode(encryptionKey), "AES");
          cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(Base64.getDecoder().decode(iv)));
-         return cipher.doFinal(plainText.getBytes("UTF-8"));
+         return cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
       } catch (NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException | InvalidKeyException
-               | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException
-               | UnsupportedEncodingException e) {
+               | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
          throw new EncryptionException("Error during encryption", e);
       }
    }
@@ -65,10 +62,9 @@ public class EncryptionUtil {
          Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
          SecretKeySpec key = new SecretKeySpec(Base64.getDecoder().decode(encryptionKey), "AES");
          cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(Base64.getDecoder().decode(iv)));
-         return new String(cipher.doFinal(cipherText), "UTF-8");
+         return new String(cipher.doFinal(cipherText), StandardCharsets.UTF_8);
       } catch (NoSuchAlgorithmException | NoSuchProviderException | NoSuchPaddingException | InvalidKeyException
-               | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException
-               | UnsupportedEncodingException e) {
+               | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
          throw new EncryptionException("Error during decryption", e);
       }
    }

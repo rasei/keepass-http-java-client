@@ -22,19 +22,12 @@ package net.seidengarn.keepasshttp.client.exception;
  */
 public class KeePassHttpCommunicationException extends KeePassHttpException {
 
-   public KeePassHttpCommunicationException() {
-   }
-
    public KeePassHttpCommunicationException(String a) {
       super(a);
    }
 
    public KeePassHttpCommunicationException(String a, Throwable t) {
       super(a, t);
-   }
-
-   public KeePassHttpCommunicationException(Throwable t) {
-      super(t);
    }
 
 }
